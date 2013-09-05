@@ -1,0 +1,106 @@
+<div id='main_body'>
+<%#= render inline: ERB.new(@erb_code).result(binding) %>
+<%%>
+<h4><%=t('Machine Tool Info')%> </h4>
+
+<p>
+  <b><%=t('Equipment Name')%>:</b>
+  <%= @machine_tool.name %>
+</p>
+<p>
+  <b><%=t('Model#')%>:</b>
+  <%= @machine_tool.model_num %>
+</p> 
+<p>
+  <b><%=t('Tech Spec') %>:</b>
+  <%= @machine_tool.tech_spec %>
+</p> 
+<p>
+  <b><%=t('Serial#')%>:</b>
+  <%= @machine_tool.serial_num %>
+</p> 
+<p>
+  <b><%=t('Equipment Category')%>:</b>
+  <%= @machine_tool.category.name %>
+</p> 
+<p>
+  <b><%=t('Equipment Status')%>:</b>
+  <%= @machine_tool.status.name %>
+</p> 
+<p>
+  <b><%=t('Main Power(W)')%>:</b>
+  <%= @machine_tool.main_power_w %>
+</p> 
+<p>
+  <b><%=t('RPM')%>:</b>
+  <%= @machine_tool.rpm %>
+</p> 
+<p>
+  <b><%=t('Working Voltage')%>:</b>
+  <%= @machine_tool.voltage %>
+</p> 
+<p>
+  <b><%=t('Work Piece')%>:</b>
+  <%= @machine_tool.work_piece %>
+</p> 
+<p>
+  <b><%=t('Equipment Precision')%>:</b>
+  <%= @machine_tool.precision %>
+</p> 
+<p>
+  <b><%=t('Equipment Tool')%>:</b>
+  <%= @machine_tool.tool %>
+</p> 
+<p>
+  <b><%=t('Equipment Accessory')%>:</b>
+  <%= @machine_tool.accessory %>
+</p>
+<p>
+  <b><%=t('Equipment Lubricant')%>:</b>
+  <%= @machine_tool.lubricant %>
+</p> 
+<p>
+  <b><%=t('Equipment Coolant')%>:</b>
+  <%= @machine_tool.coolant %>
+</p>  
+<p>
+  <b><%=t('Manufacture Date')%>:</b>
+  <%= @machine_tool.mfg_date.strftime("%Y/%m") %>
+</p> 
+<p>
+  <b><%=t('Purchase Date')%>:</b>
+  <%= @machine_tool.purchase_date.strftime("%Y/%m") %>
+</p>
+<p>
+  <b><%=t('Decommissioned?')%>:</b>
+  <%= @machine_tool.decommissioned ? t('Yes') : t('No') %>
+</p> 
+<p>
+  <b><%=t('Equipment Weight(KG)')%>:</b>
+  <%= @machine_tool.weight_kg %>
+</p> 
+<p>
+  <b><%=t('Equipment Dimension(LWH)')%>:</b>
+  <%= @machine_tool.dimension %>
+</p>  
+<p>
+  <b><%=t('Note')%>:</b>
+  <%= @machine_tool.note %>
+</p> 
+<p>
+  <b><%=t('Operator')%>:</b>
+  <%= @machine_tool.operator.name if @machine_tool.operator_id.present? %>
+</p>
+<p>
+  <b><%=t('Last Updated By')%>:</b>
+  <%= @machine_tool.last_updated_by.name %>
+</p>
+	<table class="table table-striped">
+	  <tr>
+	    <th>
+	    	<%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :id => 'close', :class => BUTTONS_CLS['action']%>
+	    </th>
+	  </tr>
+	</table>
+	
+</div>

@@ -1,0 +1,43 @@
+<%= simple_form_for(@machine_tool) do |f| %>    
+  
+  <%#= render inline: ERB.new(@erb_code).result(binding) %>
+  <%%>
+  
+  <%= f.input :name, :label => t('Equipment Name') }%>
+  <%= f.input :model_num, :label => t('Model#') %>
+  <%= f.input :tech_spec, :label => t('Tech Spec'), :input_html => {:rows => 4} %>
+  <%= f.input :serial_num, :label => t('Serial#'), :readonly => readonly?(@machine_tool, 'serial_num') %>
+  <%= f.input :category_id, :label => t('Equipment Category'), :collection => Commonx::CommonxHelper.return_misc_definitions('equipment_category'), :include_blank => true,
+                            :label_method => :name, :value_method => :id %>
+  <%= f.input :mfg_date, :label => t('Manafacture Date'), :order => [:year, :month], :include_blank => true  %>
+  <%= f.input :mfr, :label => t('Manufacturer') %>
+  <%= f.input :purchase_date, :label => t('Purchase Date'), :order => [:year, :month], :include_blank => true  %>
+  <% if readonly?(@machine_tool, 'status_id') %>
+    <%= f.input :status_name, :label => t('Equipment Status'), :readonly => true, :input_html => {:value => @machine_tool.status.name} if @machine_tool.status_id.present? %>
+  <% else %>
+    <%= f.input :status_id, :label => t('Equipment Status'), :collection => Commonx::CommonxHelper.return_misc_definitions('equipment_status'), :include_blank => true %>
+  <% end %>
+  <%= f.input :work_piece, :label => t('Work Piece'), :input_html => {:rows => 3 }%>
+  <%= f.input :rpm, :label => t('RPM') %>
+  <%= f.input :main_power_w, :label => t('Main Power(W)') %>
+  <%= f.input :voltage, :label => t('Working Voltage') %>
+  <%= f.input :decommissioned, :label => t('Decommissioned?'), :collection => [[t('Yes'), true], [t('No'), false]] %>
+  <%= f.input :tool, :label => t('Equipment Tool'), :input_html => {:rows => 3}, :readonly => readonly?(@machine_tool, 'tool') %>
+  <%= f.input :lubricant, :label => t('Lubricant'), :input_html => {:rows => 3}, :readonly => readonly?(@machine_tool, 'lubricant') %>
+  <%= f.input :coolant, :label => t('Coolant'), :input_html => {:rows => 3}, :readonly => readonly?(@machine_tool, 'coolant') %>
+  <%= f.input :accessory, :label => t('Equipment Accessory'), :input_html => {:rows => 4}, :readonly => readonly?(@machine_tool, 'accessory') %>
+  <%= f.input :precision, :label => t('Equipment Precison'), :input_html => {:rows => 3} %>
+  <% if readonly?(@machine_tool, 'operator_id')%>
+    <%= f.input :operator_name, :label => t('Operator'), :input_html => {:value => @machine_tool.operator.name} if @machine_tool.operator_id.present? %>
+  <% else %>
+    <%= f.input :operator_id, :label => t('Operator'), :collection => Authentify::UsersHelper::return_users('operator', 'machine_toolx_machine_tools'), :label_method => :name, :value_method => :id,
+                :include_blank => true %>
+  <% end %>
+  <%= f.input :weight_kg, :label => t('Weight (KG)') %>
+  <%= f.input :dimension, :label => t('Equipment Dimension (LWH)') %>
+  <%= f.input :note, :label => t('Note'), :input_html => {:rows => 8}, :readonly => readonly?(@machine_tool, 'note') %>
+  <%= f.input :last_updated_by_name, :label => t('Last Updated By'), :input_html => {:value => @machine_tool.last_updated_by.name}, :readonly => true %>
+ 
+    
+  <%= f.button :submit, t('Save'), :class => BUTTONS_CLS['action'] %>  
+<% end %> 

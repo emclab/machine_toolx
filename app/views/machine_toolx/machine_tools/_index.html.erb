@@ -1,0 +1,50 @@
+<%#= render inline: ERB.new(@erb_code).result(binding) %>
+<%%>
+<h1><%= t('Machine Tools')%></h1>
+<div class="byop_pagination"><%= will_paginate %></div>
+<table>
+  <tr>
+    <th></th>
+    <th><%=t('Equipment Name')%></th>
+    <th><%=t('Model#')%></th>
+    <th><%=t('Manufacture Date')%></th>
+    <th><%=t('Purchase Date')%></th> 
+    <th><%=t('Equipment Category')%></th>
+    <th><%=t('Equipment Status')%></th>
+    <th><%=t('Main Power(W)')%></th>
+    <th><%=t('Tech Spec')%></th>
+    <th><%=t('Decommissioned?')%></th>
+    <th><%=t('Operator')%></th>
+    <th><%=t('Last Updated By')%></th>
+      
+    <th></th>
+ 
+  </tr>
+
+<% @machine_tools.each do |r| %>
+  <tr>
+  	<% if has_action_right?('show', params[:controller], r) %>
+  	  <td><%= link_to r.id.to_s, SUBURI + "/view_handler?index=1&url=#{machine_tool_path(r)}"  %></td>
+  	<% else %>
+  	  <td><%= r.id %></td>
+  	<% end %>  	
+    <td><%= prt(r, :name) %></td>
+    <td><%= prt(r, :model_num) %></td>
+    <td><%= r.mfg_date.strftime("%Y/%m") if r.mfg_date.present? %></td>
+    <td><%= r.purchase_date.strftime("%Y/%m") if r.purchase_date.present? %></td>
+    <td><%= prt(r, 'category.name') %></td>
+    <td><%= prt(r, 'status.name') %></td>
+    <td><%= prt(r, :main_power_w) %></td>
+    <td><%= prt(r, :tech_spec) %></td>
+    <td><%= r.decommissioned ? t('Yes') : t('No') %></td>
+    <td><%= prt(r, 'operator.name') if r.operator_id.present? %></td>
+    <td><%= prt(r, 'last_updated_by.name') %></td>
+    
+    <td><%= link_to t('Edit'), SUBURI + "/view_handler?index=1&url=#{edit_maint_report_path(r)}", :class => BUTTONS_CLS['action'] if has_action_right?('update', params[:controller], r) %></td>
+
+  </tr>
+<% end %>
+</table>
+
+  <%= link_to t('Back'), SUBURI + "/view_handler?index=0",  :class => BUTTONS_CLS['action'] %>&nbsp;&nbsp;
+  <%= link_to t('New Machine Tool'), SUBURI + "/view_handler?index=1&url=#{new_machine_tool_path}", :class => BUTTONS_CLS['action'] if has_action_right?('create', params[:controller]) %>
