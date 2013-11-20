@@ -1,7 +1,8 @@
-<%= simple_form_for(@machine_tool) do |f| %>    
+<% if false %>
+  <%= render inline: ERB.new(@erb_code).result(binding) %>
   
-  <%#= render inline: ERB.new(@erb_code).result(binding) %>
-  <%%>
+<% else %>
+<%= simple_form_for(@machine_tool) do |f| %>    
   
   <%= f.input :name, :label => t('Equipment Name') }%>
   <%= f.input :model_num, :label => t('Model#') %>
@@ -9,6 +10,7 @@
   <%= f.input :serial_num, :label => t('Serial#'), :readonly => readonly?(@machine_tool, 'serial_num') %>
   <%= f.input :category_id, :label => t('Equipment Category'), :collection => Commonx::CommonxHelper.return_misc_definitions('equipment_category'), :include_blank => true,
                             :label_method => :name, :value_method => :id %>
+  <%= f.input :op_cost_hourly, :label => t('Operation Cost($/h)'), :readonly => readonly?(@machine_tool, 'op_cost_hourly') %>
   <%= f.input :mfg_date, :label => t('Manafacture Date'), :order => [:year, :month], :include_blank => true  %>
   <%= f.input :mfr, :label => t('Manufacturer') %>
   <%= f.input :purchase_date, :label => t('Purchase Date'), :order => [:year, :month], :include_blank => true  %>
@@ -38,6 +40,8 @@
   <%= f.input :note, :label => t('Note'), :input_html => {:rows => 8}, :readonly => readonly?(@machine_tool, 'note') %>
   <%= f.input :last_updated_by_name, :label => t('Last Updated By'), :input_html => {:value => @machine_tool.last_updated_by.name}, :readonly => true %>
  
-    
+  <%= link_to t('Cancel'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action'] %>  
   <%= f.button :submit, t('Save'), :class => BUTTONS_CLS['action'] %>  
 <% end %> 
+
+<% end %>

@@ -1,6 +1,9 @@
+<% if false %>
+  <%= render inline: ERB.new(@erb_code).result(binding) %>
+  
+<% else %>
 <div id='main_body'>
-<%#= render inline: ERB.new(@erb_code).result(binding) %>
-<%%>
+
 <h4><%=t('Machine Tool Info')%> </h4>
 
 <p>
@@ -22,6 +25,10 @@
 <p>
   <b><%=t('Equipment Category')%>:</b>
   <%= @machine_tool.category.name %>
+</p> 
+<p>
+  <b><%=t('Operation Cost($/h)')%>:</b>
+  <%= @machine_tool.op_cost_hourly%>
 </p> 
 <p>
   <b><%=t('Equipment Status')%>:</b>
@@ -104,3 +111,5 @@
 	</table>
 	
 </div>
+
+<% end %>

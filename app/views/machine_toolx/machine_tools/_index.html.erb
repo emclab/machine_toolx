@@ -1,7 +1,9 @@
-<%#= render inline: ERB.new(@erb_code).result(binding) %>
-<%%>
+<% if false %>
+  <%= render inline: ERB.new(@erb_code).result(binding) %>
+  
+<% else %>
 <h1><%= t('Machine Tools')%></h1>
-<div class="byop_pagination"><%= will_paginate %></div>
+<div class="byop_pagination"><%= will_paginate models %></div>
 <table>
   <tr>
     <th></th>
@@ -21,7 +23,7 @@
  
   </tr>
 
-<% @machine_tools.each do |r| %>
+<% models.each do |r| %>
   <tr>
   	<% if has_action_right?('show', params[:controller], r) %>
   	  <td><%= link_to r.id.to_s, SUBURI + "/view_handler?index=1&url=#{machine_tool_path(r)}"  %></td>
@@ -48,3 +50,5 @@
 
   <%= link_to t('Back'), SUBURI + "/view_handler?index=0",  :class => BUTTONS_CLS['action'] %>&nbsp;&nbsp;
   <%= link_to t('New Machine Tool'), SUBURI + "/view_handler?index=1&url=#{new_machine_tool_path}", :class => BUTTONS_CLS['action'] if has_action_right?('create', params[:controller]) %>
+  
+<% end %>

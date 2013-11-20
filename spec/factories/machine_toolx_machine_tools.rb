@@ -28,5 +28,6 @@ FactoryGirl.define do
     tool "MyText"
     precision "MyText"
     note 'decommisssioned'
+    op_cost_hourly 20.10
   end
 end

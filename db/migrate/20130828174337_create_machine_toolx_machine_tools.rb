@@ -26,6 +26,7 @@ class CreateMachineToolxMachineTools < ActiveRecord::Migration
       t.text :tool
       t.text :precision
       t.text :note
+      t.decimal :op_cost_hourly, :precision => 8, :scale => 2
 
       t.timestamps
     end
