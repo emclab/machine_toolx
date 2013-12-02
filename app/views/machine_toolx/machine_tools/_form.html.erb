@@ -4,39 +4,45 @@
 <% else %>
 <%= simple_form_for(@machine_tool) do |f| %>    
   
-  <%= f.input :name, :label => t('Equipment Name') }%>
-  <%= f.input :model_num, :label => t('Model#') %>
-  <%= f.input :tech_spec, :label => t('Tech Spec'), :input_html => {:rows => 4} %>
+  <%= f.input :name, :label => t('Equipment Name') , :readonly => readonly?(@machine_tool, 'name') %>
+  <%= f.input :model_num, :label => t('Model#'), :readonly => readonly?(@machine_tool, 'model_num') %>
+  <%= f.input :tech_spec, :label => t('Tech Spec'), :input_html => {:rows => 4}, :readonly => readonly?(@machine_tool, 'tech_spec') %>
   <%= f.input :serial_num, :label => t('Serial#'), :readonly => readonly?(@machine_tool, 'serial_num') %>
   <%= f.input :category_id, :label => t('Equipment Category'), :collection => Commonx::CommonxHelper.return_misc_definitions('equipment_category'), :include_blank => true,
-                            :label_method => :name, :value_method => :id %>
+                            :label_method => :name, :value_method => :id unless readonly?(@machine_tool, 'category_id') %>
+  <%= f.input :category_name, :label => t('Equipment Category'), :readonly => true, :input_html => {:value => @machine_tool.category.name} unless readonly?(@machine_tool, 'category_id')%>
   <%= f.input :op_cost_hourly, :label => t('Operation Cost($/h)'), :readonly => readonly?(@machine_tool, 'op_cost_hourly') %>
-  <%= f.input :mfg_date, :label => t('Manafacture Date'), :order => [:year, :month], :include_blank => true  %>
-  <%= f.input :mfr, :label => t('Manufacturer') %>
-  <%= f.input :purchase_date, :label => t('Purchase Date'), :order => [:year, :month], :include_blank => true  %>
+  <%= f.input :mfg_date, :label => t('Manafacture Date'), as: :date, start_year: Date.today.year - 40, end_year: Date.today.year, discard_day: true, use_month_numbers: true,
+                         :order => [:year, :month], :include_blank => true unless readonly?(@machine_tool, 'mfg_date') %>
+  <%= f.input :mfg_date_noupdate, :label => t('Manafacture Date'), :readonly => true, :input_html => {:value => @machine_tool.mfg_date.strftime("%Y/%m")} if readonly?(@machine_tool, 'mfg_date') %>
+  <%= f.input :mfr, :label => t('Manufacturer'), :readonly => readonly?(@machine_tool, 'mfr') %>
+  <%= f.input :purchase_date, :label => t('Purchase Date'), as: :date, start_year: Date.today.year - 20, end_year: Date.today.year, discard_day: true, use_month_numbers: true,
+                              :order => [:year, :month], :include_blank => true unless readonly?(@machine_tool, 'purchase_date')  %>
+  <%= f.input :purchase_date_noupdate, :label => t('Purchase Date'), :readonly => true, :input_html => {:value => @machine_tool.purchase_date.strftime("%Y/%m")} if readonly?(@machine_tool, 'purchase_date')  %>
   <% if readonly?(@machine_tool, 'status_id') %>
     <%= f.input :status_name, :label => t('Equipment Status'), :readonly => true, :input_html => {:value => @machine_tool.status.name} if @machine_tool.status_id.present? %>
   <% else %>
     <%= f.input :status_id, :label => t('Equipment Status'), :collection => Commonx::CommonxHelper.return_misc_definitions('equipment_status'), :include_blank => true %>
   <% end %>
-  <%= f.input :work_piece, :label => t('Work Piece'), :input_html => {:rows => 3 }%>
-  <%= f.input :rpm, :label => t('RPM') %>
-  <%= f.input :main_power_w, :label => t('Main Power(W)') %>
-  <%= f.input :voltage, :label => t('Working Voltage') %>
-  <%= f.input :decommissioned, :label => t('Decommissioned?'), :collection => [[t('Yes'), true], [t('No'), false]] %>
+  <%= f.input :work_piece, :label => t('Work Piece'), :input_html => {:rows => 3 }, :readonly => readonly?(@machine_tool, 'work_piece')%>
+  <%= f.input :rpm, :label => t('RPM'), :readonly => readonly?(@machine_tool, 'rpm') %>
+  <%= f.input :main_power_w, :label => t('Main Power(W)'), :readonly => readonly?(@machine_tool, 'main_power_w') %>
+  <%= f.input :voltage, :label => t('Working Voltage'), :readonly => readonly?(@machine_tool, 'voltage') %>
+  <%= f.input :decommissioned, :label => t('Decommissioned?'), :collection => [[t('Yes'), true], [t('No'), false]] unless readonly?(@machine_tool, 'decommissioned') %>
+  <%= f.input :decommissioned_noupdate, :label => t('Decommissioned?'), :readonly => true, :input_html => {:value => @machine_tool.decommissioned ? t('Yes') : t('No')} if readonly?(@machine_tool, 'decommissioned') %>
   <%= f.input :tool, :label => t('Equipment Tool'), :input_html => {:rows => 3}, :readonly => readonly?(@machine_tool, 'tool') %>
   <%= f.input :lubricant, :label => t('Lubricant'), :input_html => {:rows => 3}, :readonly => readonly?(@machine_tool, 'lubricant') %>
   <%= f.input :coolant, :label => t('Coolant'), :input_html => {:rows => 3}, :readonly => readonly?(@machine_tool, 'coolant') %>
   <%= f.input :accessory, :label => t('Equipment Accessory'), :input_html => {:rows => 4}, :readonly => readonly?(@machine_tool, 'accessory') %>
-  <%= f.input :precision, :label => t('Equipment Precison'), :input_html => {:rows => 3} %>
+  <%= f.input :precision, :label => t('Equipment Precison'), :input_html => {:rows => 3}, :readonly => readonly?(@machine_tool, 'precision') %>
   <% if readonly?(@machine_tool, 'operator_id')%>
-    <%= f.input :operator_name, :label => t('Operator'), :input_html => {:value => @machine_tool.operator.name} if @machine_tool.operator_id.present? %>
+    <%= f.input :operator_name, :label => t('Operator'), :readonly => true, :input_html => {:value => @machine_tool.operator.name} if @machine_tool.operator_id.present? %>
   <% else %>
     <%= f.input :operator_id, :label => t('Operator'), :collection => Authentify::UsersHelper::return_users('operator', 'machine_toolx_machine_tools'), :label_method => :name, :value_method => :id,
                 :include_blank => true %>
   <% end %>
-  <%= f.input :weight_kg, :label => t('Weight (KG)') %>
-  <%= f.input :dimension, :label => t('Equipment Dimension (LWH)') %>
+  <%= f.input :weight_kg, :label => t('Weight (KG)'), :readonly => readonly?(@machine_tool, 'weight_kg') %>
+  <%= f.input :dimension, :label => t('Equipment Dimension (LWH)'), :readonly => readonly?(@machine_tool, 'dimension') %>
   <%= f.input :note, :label => t('Note'), :input_html => {:rows => 8}, :readonly => readonly?(@machine_tool, 'note') %>
   <%= f.input :last_updated_by_name, :label => t('Last Updated By'), :input_html => {:value => @machine_tool.last_updated_by.name}, :readonly => true %>
  

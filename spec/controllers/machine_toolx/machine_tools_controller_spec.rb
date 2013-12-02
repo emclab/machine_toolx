@@ -17,7 +17,8 @@ module MachineToolx
       ur = FactoryGirl.create(:user_role, :role_definition_id => @role.id)
       ul = FactoryGirl.build(:user_level, :sys_user_group_id => ug.id)
       @u = FactoryGirl.create(:user, :user_levels => [ul], :user_roles => [ur])
-        
+      @cate = FactoryGirl.create(:commonx_misc_definition, :for_which => 'equipment_category') 
+      @stat = FactoryGirl.create(:commonx_misc_definition, :for_which => 'equipment_status')
     end
     
     render_views
@@ -52,7 +53,7 @@ module MachineToolx
         :sql_code => "")
         session[:user_id] = @u.id
         session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
-        equip = FactoryGirl.attributes_for(:machine_toolx_machine_tool)
+        equip = FactoryGirl.attributes_for(:machine_toolx_machine_tool, :category_id => @cate.id, :status_id => @stat.id )
         get 'create', {:use_route => :machine_toolx, :machine_tool => equip}
         response.should redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Saved!")
       end
@@ -62,7 +63,7 @@ module MachineToolx
         :sql_code => "")
         session[:user_id] = @u.id
         session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
-        equip = FactoryGirl.attributes_for(:machine_toolx_machine_tool, :name => '')
+        equip = FactoryGirl.attributes_for(:machine_toolx_machine_tool, :category_id => @cate.id, :status_id => @stat.id, :name => '')
         get 'create', {:use_route => :machine_toolx, :machine_tool => equip}
         response.should render_template('new')
       end
@@ -86,7 +87,7 @@ module MachineToolx
         :sql_code => "")
         session[:user_id] = @u.id
         session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
-        equip = FactoryGirl.create(:machine_toolx_machine_tool)
+        equip = FactoryGirl.create(:machine_toolx_machine_tool, :category_id => @cate.id, :status_id => @stat.id)
         get 'update', {:use_route => :machine_toolx, :id => equip.id, :machine_tool => {:tech_spec => 'a new name'}}
         response.should redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Updated!")
       end
@@ -96,7 +97,7 @@ module MachineToolx
         :sql_code => "")
         session[:user_id] = @u.id
         session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
-        equip = FactoryGirl.create(:machine_toolx_machine_tool)
+        equip = FactoryGirl.create(:machine_toolx_machine_tool, :category_id => @cate.id, :status_id => @stat.id)
         get 'update', {:use_route => :machine_toolx, :id => equip.id, :machine_tool => {:model_num => ''}}
         response.should render_template('edit')
       end
@@ -108,9 +109,7 @@ module MachineToolx
         :sql_code => "record.last_updated_by_id == session[:user_id]")
         session[:user_id] = @u.id
         session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
-        cate = FactoryGirl.create(:commonx_misc_definition, :for_which => 'equipment_category')
-        status = FactoryGirl.create(:commonx_misc_definition, :for_which => 'equipment_status')
-        equip = FactoryGirl.create(:machine_toolx_machine_tool, :category_id => cate.id, :status_id => status.id, :last_updated_by_id => @u.id)
+        equip = FactoryGirl.create(:machine_toolx_machine_tool, :category_id => @cate.id, :status_id => @stat.id, :last_updated_by_id => @u.id)
         get 'show', {:use_route => :machine_toolx, :id => equip.id}
         response.should be_success
       end

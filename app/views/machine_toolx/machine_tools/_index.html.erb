@@ -42,7 +42,7 @@
     <td><%= prt(r, 'operator.name') if r.operator_id.present? %></td>
     <td><%= prt(r, 'last_updated_by.name') %></td>
     
-    <td><%= link_to t('Edit'), SUBURI + "/view_handler?index=1&url=#{edit_maint_report_path(r)}", :class => BUTTONS_CLS['action'] if has_action_right?('update', params[:controller], r) %></td>
+    <td><%= link_to t('Edit'), SUBURI + "/view_handler?index=1&url=#{edit_machine_tool_path(r)}", :class => BUTTONS_CLS['action'] if has_action_right?('update', params[:controller], r) %></td>
 
   </tr>
 <% end %>

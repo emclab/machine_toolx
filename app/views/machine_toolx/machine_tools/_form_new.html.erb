@@ -4,15 +4,17 @@
 <% else %>
 <%= simple_form_for(@machine_tool) do |f| %>    
 
-  <%= f.input :name, :label => t('Equipment Name') }%>
+  <%= f.input :name, :label => t('Equipment Name') %>
   <%= f.input :model_num, :label => t('Model#') %>
   <%= f.input :tech_spec, :label => t('Tech Spec'), :input_html => {:rows => 4} %>
   <%= f.input :serial_num, :label => t('Serial#'), :readonly => readonly?(@machine_tool, 'serial_num') %>
   <%= f.input :category_id, :label => t('Equipment Category'), :collection => Commonx::CommonxHelper.return_misc_definitions('equipment_category'), :include_blank => true %>
   <%= f.input :op_cost_hourly, :label => t('Operation Cost($/h)') %>
-  <%= f.input :mfg_date, :label => t('Manafacture Date'), :order => [:year, :month], :include_blank => true  %>
+  <%= f.input :mfg_date, :label => t('Manafacture Date'), as: :date, start_year: Date.today.year - 40, end_year: Date.today.year, discard_day: true, use_month_numbers: true,
+                         :order => [:year, :month], :include_blank => true  %>
   <%= f.input :mfr, :label => t('Manufacturer') %>
-  <%= f.input :purchase_date, :label => t('Purchase Date'), :order => [:year, :month], :include_blank => true  %>
+  <%= f.input :purchase_date, :label => t('Purchase Date'), as: :date, start_year: Date.today.year - 20, end_year: Date.today.year, discard_day: true, use_month_numbers: true,
+                              :order => [:year, :month], :include_blank => true %>
   <%= f.input :status_id, :label => t('Equipment Status'), :collection => Commonx::CommonxHelper.return_misc_definitions('equipment_status'), :include_blank => true,
               :label_method => :name, :value_method => :id %>
   <%= f.input :work_piece, :label => t('Work Piece'), :input_html => {:rows => 3 }%>
