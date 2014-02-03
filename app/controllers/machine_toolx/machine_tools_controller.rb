@@ -7,13 +7,13 @@ module MachineToolx
     def index
       @title = t('Machine Tools')
       @machine_tools = params[:machine_toolx_machine_tools][:model_ar_r].page(params[:page]).per_page(@max_pagination)
-      @erb_code = find_config_const('machine_tool_index_view', 'machine_toolx_machine_tools')
+      @erb_code = find_config_const('machine_tool_index_view', 'machine_toolx')
     end
   
     def new
       @title = t('New Machine Tool')
       @machine_tool = MachineToolx::MachineTool.new()
-      @erb_code = find_config_const('machine_tool_new_view', 'machine_toolx_machine_tools')
+      @erb_code = find_config_const('machine_tool_new_view', 'machine_toolx')
     end
   
     def create
@@ -30,7 +30,7 @@ module MachineToolx
     def edit
       @title = t('Update Machine Tool')
       @machine_tool = MachineToolx::MachineTool.find_by_id(params[:id])
-      @erb_code = find_config_const('machine_tool_edit_view', 'machine_toolx_machine_tools')
+      @erb_code = find_config_const('machine_tool_edit_view', 'machine_toolx')
     end
   
     def update
@@ -47,7 +47,7 @@ module MachineToolx
     def show
       @title = t('Show Machine Tool')
       @machine_tool = MachineToolx::MachineTool.find_by_id(params[:id])
-      @erb_code = find_config_const('machine_tool_show_view', 'machine_toolx_machine_tools')
+      @erb_code = find_config_const('machine_tool_show_view', 'machine_toolx')
     end
   end
 end
